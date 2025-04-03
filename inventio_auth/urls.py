@@ -1,8 +1,14 @@
 from django.urls import path, include
 from . import views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
-# app_name = "inventio_auth"
 
 urlpatterns = [
     path('register/', views.register_user, name='register'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('user/', views.user_info, name='user_info'),
 ]

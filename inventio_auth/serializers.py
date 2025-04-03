@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-
 from inventio_auth.models import Role
 
 User = get_user_model()
@@ -30,3 +29,10 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    role = serializers.CharField(source='role.name', read_only=True)
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'role']
