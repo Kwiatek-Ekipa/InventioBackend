@@ -19,7 +19,7 @@ from django.urls import path, include
 from inventio_auth import urls as auth_urls
 
 urlpatterns = [
-    path("", include(auth_urls)),
+    path("api/", include(auth_urls)),
 
 
 ]
