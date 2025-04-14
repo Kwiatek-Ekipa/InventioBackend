@@ -16,10 +16,10 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path, include
-from inventio_auth import urls as auth_urls
+
 
 urlpatterns = [
-    path("api/", include(auth_urls)),
+    path('api/auth/', include('inventio_auth.urls', namespace='inventio_auth')),
 
 
 ]

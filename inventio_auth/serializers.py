@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from inventio_auth.models import Role
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 
 User = get_user_model()
 
@@ -15,7 +17,17 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data['password'] != data['confirm_password']:
-            raise serializers.ValidationError("Passwords don't match")
+            raise serializers.ValidationError({"password": "Passwords do not match."})
+        try:
+            validate_password(data['password'])
+        except DjangoValidationError as e:
+            raise serializers.ValidationError({"password": e.messages})
+        if User.objects.filter(username=data['username']).exists():
+            raise serializers.ValidationError({"username": "Username is already taken."})
+        if not data['first_name'].isalpha():
+            raise serializers.ValidationError({"first_name": "First name must contain only letters."})
+        if not data['last_name'].isalpha():
+            raise serializers.ValidationError({"last_name": "Last name must contain only letters."})
         return data
 
     def create(self, validated_data):
@@ -53,9 +65,9 @@ class CreateTechnicianSerializer(serializers.ModelSerializer):
         missing_fields = [field for field in required_fields if not data.get(field)]
         if missing_fields:
             raise serializers.ValidationError(
-                f"Puste pola: {', '.join(missing_fields)}")
+                f"Empty fields: {', '.join(missing_fields)}")
         if data['password'] != data['confirm_password']:
-            raise serializers.ValidationError("Hasła nie są zgodne.")
+            raise serializers.ValidationError("Passwords do not match")
         return data
 
     def create(self, validated_data):
