@@ -8,7 +8,7 @@ from inventio_auth.enums import RoleEnum
 
 class Role(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=128, choices=RoleEnum.choices(), default=RoleEnum.WORKER)
+    name = models.CharField(max_length=128, choices=RoleEnum.choices(), default=RoleEnum.WORKER, unique=True)
 
 
 class Account(AbstractBaseUser):
