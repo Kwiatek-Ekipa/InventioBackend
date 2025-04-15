@@ -149,4 +149,4 @@ SIMPLE_JWT = {
 
 }
 
-AUTH_USER_MODEL = 'inventio_auth.CustomUser'
+AUTH_USER_MODEL = 'inventio_auth.Account'

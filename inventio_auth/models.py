@@ -1,15 +1,14 @@
 from django.contrib.auth.models import AbstractBaseUser
+from django.core.validators import MinLengthValidator
 from django.db import models
 import uuid
-from django.core.validators import MinLengthValidator
 
 class Role(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=128, validators=[MinLengthValidator(2)])
 
 
-
-class CustomUser(AbstractBaseUser):
+class Account(AbstractBaseUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
