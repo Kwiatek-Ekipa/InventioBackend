@@ -13,13 +13,15 @@ class Command(BaseCommand):
         try:
             technician_role = Role.objects.get(name=RoleEnum.TECHNICIAN.value)
 
-            Account.objects.create(
+            technician = Account.objects.create(
                 email=SEED_TECHNICIAN_EMAIL,
-                password=SEED_TECHNICIAN_PASSWORD,
                 name='Generated',
                 surname='Technician',
                 role=technician_role
             )
+            technician.set_password(SEED_TECHNICIAN_PASSWORD)
+            technician.save()
+
             print("Technician created successfully.")
         except Role.DoesNotExist:
             raise CommandError("Technician role not found.\n"
