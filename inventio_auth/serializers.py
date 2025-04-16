@@ -4,6 +4,8 @@ from inventio_auth.models import Role
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 
+from inventio_auth.enums import RoleEnum
+
 User = get_user_model()
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -31,15 +33,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        password = validated_data.pop('password')
-        validated_data.pop('confirm_password')
-        try:
-            default_role = Role.objects.get(name='Worker')
-        except Role.DoesNotExist:
-            raise serializers.ValidationError('Role does not exist')
-        user = User.objects.create(**validated_data, role=default_role)
-        user.set_password(password)
-        user.save()
+        user = User.objects.create(**validated_data, role=RoleEnum.WORKER)
         return user
 
 
@@ -68,17 +62,10 @@ class CreateTechnicianSerializer(serializers.ModelSerializer):
                 f"Empty fields: {', '.join(missing_fields)}")
         if data['password'] != data['confirm_password']:
             raise serializers.ValidationError("Passwords do not match")
+        data.pop('confirm_password')
+
         return data
 
     def create(self, validated_data):
-        validated_data.pop('confirm_password')
-        password = validated_data.pop('password')
-        technician_role = Role.objects.get(name='Technician')
-        user = User.objects.create(**validated_data, role = technician_role)
-        user.set_password(password)
-        user.save()
+        user = User.objects.create(**validated_data, role=RoleEnum.TECHNICIAN)
         return user
-
-
-
-

@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.management import BaseCommand, CommandError
 
 from inventio_backend.settings import SEED_TECHNICIAN_EMAIL, SEED_TECHNICIAN_PASSWORD
@@ -6,6 +7,7 @@ from inventio_auth.models import Account, Role
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        User = get_user_model()
 
         if Account.objects.filter(role__name=RoleEnum.TECHNICIAN.value).exists():
             raise CommandError("Technician already exists.")
@@ -13,14 +15,14 @@ class Command(BaseCommand):
         try:
             technician_role = Role.objects.get(name=RoleEnum.TECHNICIAN.value)
 
-            technician = Account.objects.create(
+            User.objects.create(
                 email=SEED_TECHNICIAN_EMAIL,
+                password=SEED_TECHNICIAN_PASSWORD,
                 name='Generated',
                 surname='Technician',
-                role=technician_role
+                role=technician_role,
+                is_staff=True
             )
-            technician.set_password(SEED_TECHNICIAN_PASSWORD)
-            technician.save()
 
             print("Technician created successfully.")
         except Role.DoesNotExist:
