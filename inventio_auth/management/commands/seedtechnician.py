@@ -10,17 +10,15 @@ class Command(BaseCommand):
         User = get_user_model()
 
         if Account.objects.filter(role__name=RoleEnum.TECHNICIAN.value).exists():
-            raise CommandError("Technician already exists.")
+            raise print("Technician already exists.")
 
         try:
-            technician_role = Role.objects.get(name=RoleEnum.TECHNICIAN.value)
-
             User.objects.create(
                 email=SEED_TECHNICIAN_EMAIL,
                 password=SEED_TECHNICIAN_PASSWORD,
-                name='Generated',
+                name='System',
                 surname='Technician',
-                role=technician_role,
+                role=RoleEnum.TECHNICIAN,
                 is_staff=True
             )
 

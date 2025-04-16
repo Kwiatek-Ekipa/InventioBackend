@@ -6,7 +6,8 @@ from inventio_auth.models import Role
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        missing_roles = [role.value for role in RoleEnum if not Role.objects.filter(name=role.value).exists()]
+        db_roles = Role.objects.filter(name__in=[role.value for role in RoleEnum])
+        missing_roles = [role.value for role in RoleEnum if not db_roles.filter(name=role.value).exists()]
 
         if len(missing_roles) == 0:
             print('All roles have already been added.')

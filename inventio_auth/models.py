@@ -12,6 +12,7 @@ class Role(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=128, choices=RoleEnum.choices(), default=RoleEnum.WORKER, unique=True)
 
+
 class AccountManager(BaseUserManager):
     def create(self, email, password=None, role: RoleEnum = RoleEnum.WORKER, **extra_fields):
         if not email:
@@ -31,6 +32,7 @@ class AccountManager(BaseUserManager):
 
     def get_by_natural_key(self, email):
         return self.get(email=email)
+
 
 class Account(AbstractBaseUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
