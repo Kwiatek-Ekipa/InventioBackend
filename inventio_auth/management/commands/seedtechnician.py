@@ -7,13 +7,12 @@ from inventio_auth.models import Account, Role
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        User = get_user_model()
+        user = get_user_model()
 
         if Account.objects.filter(role__name=RoleEnum.TECHNICIAN.value).exists():
-            raise print("Technician already exists.")
-
+            raise CommandError("Technician already exists.")
         try:
-            User.objects.create(
+            user.objects.create(
                 email=SEED_TECHNICIAN_EMAIL,
                 password=SEED_TECHNICIAN_PASSWORD,
                 name='System',
