@@ -43,17 +43,18 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 class UserInfoSerializer(serializers.ModelSerializer):
     role = serializers.CharField(source='role.name', read_only=True)
+
     class Meta:
         model = User
         fields = ['email', 'name', 'surname', 'role']
 
 
 class CreateTechnicianSerializer(serializers.ModelSerializer):
-    role = serializers.CharField(source='role.name', read_only=True)
     confirm_password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
-        fields = ['email', 'name', 'surname', 'password', 'confirm_password', 'role']
+        fields = ['id', 'email', 'name', 'surname', 'password', 'confirm_password']
         extra_kwargs = {
             'password': {'write_only': True}
         }
