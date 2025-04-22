@@ -20,6 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('api/auth/', include('inventio_auth.urls', namespace='inventio_auth')),
+    path('api/hardware/', include('hardware.urls', namespace='hardware')),
 
 
 ]
