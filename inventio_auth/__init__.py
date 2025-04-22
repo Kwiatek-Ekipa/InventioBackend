@@ -1,1 +1,1 @@
-from .permissions import is_technician
+from .permissions import IsTechnician, IsWorker

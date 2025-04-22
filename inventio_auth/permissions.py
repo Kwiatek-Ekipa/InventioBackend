@@ -1,9 +1,10 @@
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import BasePermission
 from inventio_auth.enums import RoleEnum
 
-def is_technician(view_func):
-    def _wrapped_view(request, *args, **kwargs):
-        if not request.user.is_authenticated or request.user.role.name != RoleEnum.TECHNICIAN.value:
-            raise PermissionDenied()
-        return view_func(request, *args, **kwargs)
-    return _wrapped_view
+class IsTechnician(BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.role.name == RoleEnum.TECHNICIAN.value
+
+class IsWorker(BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.role.name == RoleEnum.WORKER.value
