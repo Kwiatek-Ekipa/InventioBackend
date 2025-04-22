@@ -9,18 +9,31 @@ class CreateHardwareCategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, data):
-        if not data['name'].isalpha():
+        category_name = data['name']
+        category_name_no_whitespaces = "".join(category_name.split())
+        if category_name_no_whitespaces == "":
+            raise serializers.ValidationError({"name": "Name cannot be empty or contain only whitespaces"})
+        if not category_name_no_whitespaces.isalpha():
             raise serializers.ValidationError({"name": "Name must contain only letters and whitespaces"})
-        if len(data['name']) < 2:
+        if len(category_name_no_whitespaces) < 2:
             raise serializers.ValidationError({"name": "Name must be greater or equal to 2 characters"})
-        if len(data['name']) > 128:
+        if len(category_name_no_whitespaces) > 128:
             raise serializers.ValidationError({"name": "Name must be less than 128 characters"})
-        # Something else already checks all the 3 conditions above and raises other error messages. Keeping it for double safety
 
-        if Category.objects.filter(name=data['name']).exists():
+        if Category.objects.filter(name=category_name).exists():
             raise serializers.ValidationError({"name": "A category with this name already exists."})
         return data
 
     def create(self, validated_data):
         category = Category.objects.create(**validated_data)
         return category
+
+class GetHardwareCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['name']
+
+class HardwareCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = "__all__"

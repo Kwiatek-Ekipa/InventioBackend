@@ -26,6 +26,7 @@ schema_view = swagger_get_schema_view(openapi.Info(title='Inventio API', default
 urlpatterns = [
     path('api/', include([
              path('auth/', include('inventio_auth.urls', namespace='inventio_auth')),
+        path('hardware/', include('hardware.urls', namespace='hardware')),
     ])),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]

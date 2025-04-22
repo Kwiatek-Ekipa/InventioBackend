@@ -1,8 +1,10 @@
 from django.urls import path
 from . import views
-
+from rest_framework.routers import DefaultRouter
 app_name = "hardware"
 
-urlpatterns = [
-    path('categories/', views.create_category, name='create_category'),
-]
+urlpatterns = []
+
+router = DefaultRouter()
+router.register('categories', views.HardwareCategoryViewSet)
+urlpatterns += router.urls
