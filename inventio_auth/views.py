@@ -1,12 +1,12 @@
 import uuid
 
-from drf_yasg import openapi
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from drf_yasg.utils import swagger_auto_schema
+
+from drf_spectacular.utils import extend_schema
 
 from .enums import RoleEnum
 from .permissions import IsTechnician
@@ -14,9 +14,9 @@ from .serializers import UserRegisterSerializer, UserInfoSerializer, CreateTechn
 from .models import Account
 
 
-@swagger_auto_schema(method='post', request_body=UserRegisterSerializer)
-@api_view(['POST'])
+@extend_schema(auth=[], request=UserRegisterSerializer, responses={201: UserRegisterSerializer}, )
 @permission_classes([AllowAny])
+@api_view(['POST'])
 def register_user(request: Request):
     serializer = UserRegisterSerializer(data=request.data)
     if serializer.is_valid():
@@ -25,7 +25,7 @@ def register_user(request: Request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(method='get', responses={200: UserInfoSerializer})
+@extend_schema(responses={200: UserInfoSerializer})
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_info(request: Request):
@@ -34,7 +34,7 @@ def user_info(request: Request):
     return Response(serializer.data)
 
 
-@swagger_auto_schema(method='post', request_body=CreateTechnicianSerializer)
+@extend_schema(request=CreateTechnicianSerializer, responses={201: CreateTechnicianSerializer})
 @api_view(['POST'])
 @permission_classes([IsTechnician])
 def create_technician(request: Request):
@@ -45,8 +45,7 @@ def create_technician(request: Request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@swagger_auto_schema(method='delete',
-                     manual_parameters=[openapi.Parameter('user_id', openapi.IN_PATH, type=openapi.TYPE_STRING, format=openapi.FORMAT_UUID)])
+@extend_schema(responses={204: None})
 @api_view(['DELETE'])
 @permission_classes([IsTechnician])
 def delete_technician(request: Request, user_id: uuid.UUID):
