@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    'drf_yasg',
+    'drf_spectacular',
     'hardware',
     'stocktaking',
     'inventio_auth'
@@ -142,6 +142,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 SIMPLE_JWT = {
@@ -150,17 +151,26 @@ SIMPLE_JWT = {
 
 }
 
-SWAGGER_SETTINGS = {
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Inventio API',
+    'DESCRIPTION': 'Documentation of web application for storing computer hardware',
+    'VERSION': '1.0',
     'SECURITY_DEFINITIONS': {
-        'Bearer Authorization': {
-            'type': 'apiKey',
-            'in': 'header',
-            'name': 'Authorization',
-            'description': 'JWT Authorization header using the Bearer scheme. Example: `Bearer {token}`'
+        'bearerAuth': {
+            'type': 'http',
+            'scheme': 'bearer',
+            'bearerFormat': 'JWT',
         }
     },
-    'USE_SESSION_AUTH': False,
-    'PERSIST_AUTH': True,
+    'SWAGGER_UI_SETTINGS': {
+        'persistAuthorization': True,
+    },
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SORT_OPERATION_PARAMETERS': False,
+    'TAGS_SORTER': 'alpha',
+    'PATH_PREFIX_TAGS': True,
+    'SCHEMA_PATH_PREFIX': '/api',
 }
 
 AUTH_USER_MODEL = 'inventio_auth.Account'

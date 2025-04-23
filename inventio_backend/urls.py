@@ -16,17 +16,13 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path, include
-from rest_framework.permissions import AllowAny
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view as swagger_get_schema_view
-
-schema_view = swagger_get_schema_view(openapi.Info(title='Inventio API', default_version='v1'), public=True,
-                                      permission_classes=[AllowAny])
+from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 
 urlpatterns = [
     path('api/', include([
              path('auth/', include('inventio_auth.urls', namespace='inventio_auth')),
         path('hardware/', include('hardware.urls', namespace='hardware')),
     ])),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]
