@@ -20,7 +20,7 @@ from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 
 urlpatterns = [
     path('api/', include([
-             path('auth/', include('inventio_auth.urls', namespace='inventio_auth')),
+        path('auth/', include('inventio_auth.urls', namespace='inventio_auth')),
         path('hardware/', include('hardware.urls', namespace='hardware')),
     ])),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
