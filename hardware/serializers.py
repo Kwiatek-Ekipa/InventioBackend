@@ -28,11 +28,6 @@ class CreateHardwareCategorySerializer(serializers.ModelSerializer):
         category = Category.objects.create(**validated_data)
         return category
 
-class GetHardwareCategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ['name']
-
 class HardwareCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
