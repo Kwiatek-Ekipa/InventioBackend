@@ -15,8 +15,8 @@ from .models import Account
 
 
 @extend_schema(auth=[], request=UserRegisterSerializer, responses={201: UserRegisterSerializer}, )
-@permission_classes([AllowAny])
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def register_user(request: Request):
     serializer = UserRegisterSerializer(data=request.data)
     if serializer.is_valid():
