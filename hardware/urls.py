@@ -6,5 +6,5 @@ app_name = "hardware"
 urlpatterns = []
 
 router = DefaultRouter()
-router.register('categories', HardwareCategoryViewSet)
+router.register('categories', HardwareCategoryViewSet, basename='categories')
 urlpatterns += router.urls
