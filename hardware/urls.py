@@ -1,8 +1,8 @@
 from rest_framework.routers import DefaultRouter
 from .viewsets import HardwareCategoryViewSet
+from hardware.viewsets import BrandViewSet
 
 app_name = "hardware"
-from hardware.viewsets import BrandViewSet
 
 
 router = DefaultRouter()
