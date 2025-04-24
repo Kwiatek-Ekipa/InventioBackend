@@ -6,8 +6,6 @@ app_name = 'hardware'
 
 router = DefaultRouter()
 
-router.register('brand', BrandViewSet, basename='brand')
+router.register('brands', BrandViewSet, basename='brand')
 
-urlpatterns = [
-
-] + router.urls
+urlpatterns = [] + router.urls

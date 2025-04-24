@@ -20,8 +20,8 @@ class BrandViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         name_query = self.request.query_params.get('name', '')
         if name_query:
-            return self.serializer_class.Meta.model.objects.filter(name__icontains=name_query)
-        return self.serializer_class.Meta.model.objects.all()
+            return BrandSerializer.Meta.model.objects.filter(name__icontains=name_query)
+        return BrandSerializer.Meta.model.objects.all()
 
     @extend_schema(
         parameters=[
