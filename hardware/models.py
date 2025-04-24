@@ -1,12 +1,14 @@
 import uuid
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
+
+from hardware.validators import no_only_digits
 from inventio_auth.models import Account
 
 
 class Brand(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=128, validators=[MinLengthValidator(2)])
+    name = models.CharField(max_length=128, validators=[MinLengthValidator(2), no_only_digits], unique=True)
 
 
 class Category(models.Model):
