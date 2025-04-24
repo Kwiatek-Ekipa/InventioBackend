@@ -28,11 +28,11 @@ class HardwareCategoryViewSet(viewsets.ModelViewSet):
     @extend_schema(
         parameters=[
             OpenApiParameter(
-                name='name',
-                description='Filter categories by name (case-insensitive substring match)',
-                required=False,
-                type=str,
-                location=OpenApiParameter.QUERY
+                name = 'name',
+                description = 'Filter results by category name (case-insensitive, partial match supported)',
+                required = False,
+                type = str,
+                location = OpenApiParameter.QUERY
             )
         ]
     )
@@ -50,16 +50,22 @@ class BrandViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name = 'name',
+                description = 'Filter results by brand name (case-insensitive, partial match supported)',
+                required = False,
+                type = str,
+                location = OpenApiParameter.QUERY
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
     def get_queryset(self):
         name_query = self.request.query_params.get('name', '')
         if name_query:
             return BrandSerializer.Meta.model.objects.filter(name__icontains=name_query)
         return BrandSerializer.Meta.model.objects.all()
-
-    @extend_schema(
-        parameters=[
-            OpenApiParameter('name', type=str, location=OpenApiParameter.QUERY, description='Filter results by brand name (case-insensitive, partial match supported)')
-        ]
-    )
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
