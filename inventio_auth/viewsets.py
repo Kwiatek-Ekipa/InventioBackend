@@ -1,6 +1,7 @@
 from django.db.models import Q
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import viewsets, mixins
+from rest_framework.permissions import IsAuthenticated
 
 from inventio_auth import IsTechnician
 from inventio_auth.models import Role
@@ -10,6 +11,7 @@ from inventio_auth.serializers import AccountSerializer, RoleSerializer
 class RoleViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
+    permission_classes = [IsAuthenticated]
 
 class AccountViewSet(
     mixins.RetrieveModelMixin,
