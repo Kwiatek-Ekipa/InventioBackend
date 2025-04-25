@@ -4,6 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 
 from inventio_auth.enums import RoleEnum
+from inventio_auth.models import Role
 
 User = get_user_model()
 
@@ -74,3 +75,30 @@ class CreateTechnicianSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create(**validated_data, role=RoleEnum.TECHNICIAN)
         return user
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = "__all__"
+
+class AccountSerializer(serializers.ModelSerializer):
+    role = RoleSerializer(read_only=True)
+    role_id = serializers.UUIDField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'name', 'surname', 'role', 'role_id']
+        extra_kwargs = {
+            'id': {'read_only': True},
+            'email': {'read_only': True},
+            'name': {'read_only': True},
+            'surname': {'read_only': True},
+        }
+
+    def update(self, instance, validated_data):
+        role_id = validated_data.get('role_id', instance.role)
+        role = Role.objects.get(id=role_id)
+        instance.role = role
+        instance.save()
+        return instance
