@@ -20,7 +20,7 @@ urlpatterns = [
         path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
         path('user-info/', views.user_info, name='user_info'),
     ])),
-    path('technician/', include([
+    path('technicians/', include([
         path('', views.create_technician, name='create_technician'),
         path('<uuid:user_id>/', views.delete_technician, name='delete_technician'),
     ])),
