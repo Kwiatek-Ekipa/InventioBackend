@@ -13,10 +13,6 @@ class Brand(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                name='unique_brand_name',
-                fields=['name']
-            ),
             models.CheckConstraint(
                 name='brand_name_min_length_2',
                 condition=Q(name__regex=r'^.{2,}$')
@@ -34,10 +30,6 @@ class Category(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                name='unique_category_name',
-                fields=['name']
-            ),
             models.CheckConstraint(
                 name='category_name_min_length_2',
                 condition=Q(name__regex=r'^.{2,}$')
@@ -61,10 +53,6 @@ class Device(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                name='unique_serial_number',
-                fields=['serial_number']
-            ),
             models.CheckConstraint(
                 name='year_of_production_min_value',
                 condition=Q(year_of_production__gte=1950)
