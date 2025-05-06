@@ -19,7 +19,7 @@ class Role(models.Model):
         constraints = [
             models.CheckConstraint(
                 name="role_name_worker_or_technician",
-                condition=models.Q(name__in=[RoleEnum.WORKER.value, RoleEnum.TECHNICIAN.value])
+                condition=models.Q(name__in=[role.value for role in RoleEnum])
             )
         ]
 
