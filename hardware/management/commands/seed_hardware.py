@@ -14,4 +14,4 @@ class Command(BaseCommand):
         self.stdout.write(self.style.NOTICE("Seeding devices..."))
         call_command("seed_devices")
 
-        self.stdout.write(self.style.SUCCESS("Hardware data seeding complete."))
+        self.stdout.write(self.style.SUCCESS("\nHardware data seeding complete."))
