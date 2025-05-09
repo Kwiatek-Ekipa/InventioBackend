@@ -1,7 +1,8 @@
 import uuid
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
-from django.db.models import Q, F, Func, Value
+from django.db.models import Q
+from django.utils.timezone import now
 
 from hardware.validators import no_only_digits
 from inventio_auth.models import Account
@@ -47,7 +48,7 @@ class Device(models.Model):
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
     model = models.CharField(max_length=128)
     year_of_production = models.IntegerField(validators=[MinValueValidator(1950)])
-    added_date = models.DateTimeField(auto_now_add=True)
+    added_date = models.DateTimeField(default=now)
     added_by = models.ForeignKey(Account, on_delete=models.CASCADE)
     serial_number = models.CharField(max_length=128, unique=True)
 
