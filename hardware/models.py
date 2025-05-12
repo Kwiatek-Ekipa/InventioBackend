@@ -44,8 +44,8 @@ class Category(models.Model):
 
 class Device(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     model = models.CharField(max_length=128)
     year_of_production = models.IntegerField(validators=[MinValueValidator(1950)])
     added_date = models.DateTimeField(default=now)

@@ -29,6 +29,8 @@ class Command(BaseCommand):
             {"model": "DCP-T720DW", "brand": "HP", "category": "Drukarki"},
             {"model": "K8 Pro", "brand": "Asus", "category": "Klawiatury"},
             {"model": "Super Extra Hiper Max", "brand": "Acer", "category": "Komputery stacjonarne"},
+            {"model": "Gaming Super Fast", "brand": "MSI", "category": "Smart Lodówki"},
+            {"model": "Super Zasysacz", "brand": "Gigabyte", "category": "Smart Odkurzacze"}
         ]
 
         now = datetime.now()
@@ -53,8 +55,8 @@ class Command(BaseCommand):
 
             existing = Device.objects.filter(
                 model=device_data["model"],
-                brand_id=brand,
-                category_id=category
+                brand=brand,
+                category=category
             ).exists()
 
             if existing:
@@ -70,8 +72,8 @@ class Command(BaseCommand):
 
             device = Device.objects.create(
                 model=device_data["model"],
-                brand_id=brand,
-                category_id=category,
+                brand=brand,
+                category=category,
                 year_of_production=random_year,
                 added_date=random_added_date,
                 added_by=technician,
