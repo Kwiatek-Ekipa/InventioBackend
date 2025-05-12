@@ -1,4 +1,4 @@
-from django.core.management import BaseCommand, call_command
+from django.core.management import BaseCommand
 from hardware.management.commands.seed_devices import Command as SeedDevicesCommand
 from hardware.management.commands.seed_categories import Command as SeedCategoriesCommand
 from hardware.management.commands.seed_brands import Command as SeedBrandsCommand
