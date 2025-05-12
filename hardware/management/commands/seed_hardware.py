@@ -4,7 +4,6 @@ from hardware.management.commands.seed_categories import Command as SeedCategori
 from hardware.management.commands.seed_brands import Command as SeedBrandsCommand
 
 class Command(BaseCommand):
-    help = "Seed brands, categories, and devices for the hardware app."
 
     def handle(self, *args, **options):
         print(self.style.NOTICE("Seeding brands..."))

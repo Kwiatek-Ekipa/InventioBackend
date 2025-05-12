@@ -3,7 +3,6 @@ from hardware.models import Category
 
 
 class Command(BaseCommand):
-    help = "Seed default hardware categories into the database."
 
     def handle(self, *args, **options):
         category_names = [

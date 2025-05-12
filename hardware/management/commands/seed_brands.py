@@ -3,7 +3,6 @@ from hardware.models import Brand
 
 
 class Command(BaseCommand):
-    help = "Seed default hardware brands into the database."
 
     def handle(self, *args, **options):
         brand_names = [

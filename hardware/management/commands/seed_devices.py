@@ -9,7 +9,6 @@ import random
 
 
 class Command(BaseCommand):
-    help = "Seed example devices into the database."
 
     def handle(self, *args, **options):
         try:
