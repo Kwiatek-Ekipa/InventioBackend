@@ -11,6 +11,7 @@ from hardware.models import Device
 from hardware.serializers import HardwareCategorySerializer, DeviceSerializer
 from hardware.serializers import BrandSerializer
 from inventio_auth import IsTechnician
+from inventio_auth.enums import RoleEnum
 
 
 class HardwareCategoryViewSet(viewsets.ModelViewSet):
@@ -91,8 +92,8 @@ class DeviceViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role.name == 'WORKER':
-            return Device.objects.filter(stocktaking__user_id=user).distinct()
+        if user.role.name == RoleEnum.WORKER.value:
+            return Device.objects.filter(stocktaking__user_id=user.id).distinct()
         return Device.objects.all()
 
     def perform_create(self, serializer):
