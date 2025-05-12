@@ -27,4 +27,4 @@ class Command(BaseCommand):
 
         for name in missing_names:
             Category.objects.create(name=name)
-            print(self.style.SUCCESS("Added category: {name}."))
+            print(self.style.SUCCESS(f"Added category: {name}."))
