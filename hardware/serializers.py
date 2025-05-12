@@ -18,3 +18,6 @@ class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device
         fields = '__all__'
+        extra_kwargs = {
+            'added_by': {'read_only': True},
+        }

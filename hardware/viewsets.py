@@ -1,9 +1,12 @@
+import uuid
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 
+from hardware.filters import DeviceFilter
 from hardware.models import Device
 from hardware.serializers import HardwareCategorySerializer, DeviceSerializer
 from hardware.serializers import BrandSerializer
@@ -76,13 +79,7 @@ class BrandViewSet(viewsets.ModelViewSet):
 class DeviceViewSet(viewsets.ModelViewSet):
     serializer_class = DeviceSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = {
-        'brand_id': ['exact'],
-        'category_id': ['exact'],
-        'model': ['icontains'],
-        'serial_number': ['icontains'],
-        'year_of_production': ['gte', 'lte'],
-    }
+    filterset_class = DeviceFilter
     ordering_fields = ['year_of_production', 'model', 'serial_number', 'added_date']
 
     def get_permissions(self):
@@ -95,13 +92,17 @@ class DeviceViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if user.role.name == 'WORKER':
-            return Device.objects.filter(added_by=user)
+            return Device.objects.filter(stocktaking__user_id=user).distinct()
         return Device.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(added_by=self.request.user)
 
     @extend_schema(
         parameters=[
-            OpenApiParameter(name='brand_id', type=str, location=OpenApiParameter.QUERY),
-            OpenApiParameter(name='category_id', type=str, location=OpenApiParameter.QUERY),
+            OpenApiParameter(name='brand_id', type=uuid.UUID, location=OpenApiParameter.QUERY, many=True, explode=True),
+            OpenApiParameter(name='category_id', type=uuid.UUID, location=OpenApiParameter.QUERY, many=True,
+                             explode=True),
             OpenApiParameter(name='model', type=str, location=OpenApiParameter.QUERY),
             OpenApiParameter(name='serial_number', type=str, location=OpenApiParameter.QUERY),
             OpenApiParameter(name='year_of_production__gte', type=int, location=OpenApiParameter.QUERY),
