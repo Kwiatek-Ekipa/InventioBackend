@@ -80,7 +80,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
     serializer_class = DeviceSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = DeviceFilter
-    ordering_fields = ['year_of_production', 'model', 'serial_number', 'added_date']
+    ordering_fields = ['year_of_production', 'model', 'added_date']
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'destroy']:
@@ -90,7 +90,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
 
     def get_queryset(self):
-        if getattr(self, 'swagger_fake_view', False):  # Protect against schema generation error
+        if getattr(self, 'swagger_fake_view', False):
             return Device.objects.none()
 
         user = self.request.user
@@ -110,7 +110,16 @@ class DeviceViewSet(viewsets.ModelViewSet):
             OpenApiParameter(name='serial_number', type=str, location=OpenApiParameter.QUERY),
             OpenApiParameter(name='year_of_production__gte', type=int, location=OpenApiParameter.QUERY),
             OpenApiParameter(name='year_of_production__lte', type=int, location=OpenApiParameter.QUERY),
-            OpenApiParameter(name='ordering', type=str, location=OpenApiParameter.QUERY),
+            OpenApiParameter(
+                name='ordering',
+                type=str,
+                location=OpenApiParameter.QUERY,
+                description=(
+                        "Sort results by one of the following fields: "
+                        "`year_of_production`, `model`, `added_date`. "
+                        "Prefix with `-` to sort descending (e.g., `-model`)."
+                )
+            ),
         ]
     )
     def list(self, request, *args, **kwargs):
