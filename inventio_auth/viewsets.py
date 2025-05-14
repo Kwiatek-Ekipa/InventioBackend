@@ -3,7 +3,7 @@ from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 
-from inventio_auth import IsTechnician
+from shared import IsTechnician
 from inventio_auth.models import Role
 from inventio_auth.serializers import AccountSerializer, RoleSerializer
 

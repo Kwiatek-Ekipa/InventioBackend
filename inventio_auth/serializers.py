@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 
-from inventio_auth.enums import RoleEnum
+from shared.enums import RoleEnum
 from inventio_auth.models import Role
 
 User = get_user_model()

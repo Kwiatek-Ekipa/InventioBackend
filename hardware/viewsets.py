@@ -10,8 +10,7 @@ from hardware.filters import DeviceFilter
 from hardware.models import Device
 from hardware.serializers import HardwareCategorySerializer, DeviceSerializer
 from hardware.serializers import BrandSerializer
-from inventio_auth import IsTechnician
-from inventio_auth.enums import RoleEnum
+from shared import IsTechnician, RoleEnum
 
 
 class HardwareCategoryViewSet(viewsets.ModelViewSet):
@@ -91,6 +90,9 @@ class DeviceViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):  # Protect against schema generation error
+            return Device.objects.none()
+
         user = self.request.user
         if user.role.name == RoleEnum.WORKER.value:
             return Device.objects.filter(stocktaking__user_id=user.id).distinct()

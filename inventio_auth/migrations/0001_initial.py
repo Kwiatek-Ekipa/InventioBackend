@@ -2,7 +2,7 @@
 
 import django.core.validators
 import django.db.models.deletion
-import inventio_auth.enums
+import shared
 import uuid
 from django.db import migrations, models
 
@@ -19,7 +19,8 @@ class Migration(migrations.Migration):
             name='Role',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(choices=[('worker', 'Worker'), ('technician', 'Technician')], default=inventio_auth.enums.RoleEnum['WORKER'], max_length=128, unique=True)),
+                ('name', models.CharField(choices=[('worker', 'Worker'), ('technician', 'Technician')], default=
+                shared.RoleEnum['WORKER'], max_length=128, unique=True)),
             ],
         ),
         migrations.CreateModel(
