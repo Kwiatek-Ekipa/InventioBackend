@@ -9,19 +9,19 @@ from inventio_auth.models import Role
 User = get_user_model()
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    confirm_password = serializers.CharField(write_only=True)
+    password_confirmation = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'confirm_password', 'name', 'surname']
+        fields = ['id', 'email', 'password', 'password_confirmation', 'name', 'surname']
         extra_kwargs = {
             'password': {'write_only': True}
         }
 
     def validate(self, data):
-        if data['password'] != data['confirm_password']:
+        if data['password'] != data['password_confirmation']:
             raise serializers.ValidationError({"password": "Passwords do not match."})
-        data.pop('confirm_password')
+        data.pop('password_confirmation')
 
         try:
             validate_password(data['password'])
@@ -51,24 +51,24 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
 
 class CreateTechnicianSerializer(serializers.ModelSerializer):
-    confirm_password = serializers.CharField(write_only=True)
+    password_confirmation = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'name', 'surname', 'password', 'confirm_password']
+        fields = ['id', 'email', 'name', 'surname', 'password', 'password_confirmation']
         extra_kwargs = {
             'password': {'write_only': True}
         }
 
     def validate(self, data):
-        required_fields = ['name', 'surname', 'email', 'password', 'confirm_password']
+        required_fields = ['name', 'surname', 'email', 'password', 'password_confirmation']
         missing_fields = [field for field in required_fields if not data.get(field)]
         if missing_fields:
             raise serializers.ValidationError(
                 f"Empty fields: {', '.join(missing_fields)}")
-        if data['password'] != data['confirm_password']:
+        if data['password'] != data['password_confirmation']:
             raise serializers.ValidationError("Passwords do not match")
-        data.pop('confirm_password')
+        data.pop('password_confirmation')
 
         return data
 
