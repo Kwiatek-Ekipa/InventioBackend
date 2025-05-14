@@ -4,8 +4,8 @@ from django.db import models
 from django.db.models import Q
 from django.utils.timezone import now
 
-from hardware.validators import no_only_digits
 from inventio_auth.models import Account
+from shared import no_only_digits, not_greater_than_current_year
 
 
 class Brand(models.Model):
@@ -47,7 +47,7 @@ class Device(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     model = models.CharField(max_length=128)
-    year_of_production = models.IntegerField(validators=[MinValueValidator(1950)])
+    year_of_production = models.IntegerField(validators=[MinValueValidator(1950), not_greater_than_current_year])
     added_date = models.DateTimeField(default=now)
     added_by = models.ForeignKey(Account, on_delete=models.CASCADE)
     serial_number = models.CharField(max_length=128, unique=True)

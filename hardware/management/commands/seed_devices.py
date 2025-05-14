@@ -3,7 +3,7 @@ from django.core.management import BaseCommand
 from django.core.exceptions import ObjectDoesNotExist
 from hardware.models import Device, Brand, Category
 from inventio_auth.models import Account, Role
-from inventio_auth.enums import RoleEnum
+from shared import RoleEnum
 from django.utils.timezone import make_aware
 import random
 

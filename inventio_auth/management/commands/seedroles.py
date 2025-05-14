@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 
-from inventio_auth.enums import RoleEnum
+from shared.enums import RoleEnum
 from inventio_auth.models import Role
 
 
