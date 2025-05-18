@@ -1,5 +1,5 @@
 from rest_framework.permissions import BasePermission
-from inventio_auth.enums import RoleEnum
+from .enums import RoleEnum
 
 class IsTechnician(BasePermission):
     def has_permission(self, request, view):

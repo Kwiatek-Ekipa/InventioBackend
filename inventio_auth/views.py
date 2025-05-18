@@ -8,8 +8,8 @@ from rest_framework.response import Response
 
 from drf_spectacular.utils import extend_schema
 
-from .enums import RoleEnum
-from .permissions import IsTechnician
+from shared.enums import RoleEnum
+from shared.permissions import IsTechnician
 from .serializers import UserRegisterSerializer, UserInfoSerializer, CreateTechnicianSerializer
 from .models import Account
 
