@@ -1,27 +1,46 @@
-from django.contrib.auth import get_user_model
-from django.core.management import BaseCommand, CommandError
+from django.core.management import BaseCommand
 
-from inventio_backend.settings import SEED_TECHNICIAN_EMAIL, SEED_TECHNICIAN_PASSWORD
 from shared.enums import RoleEnum
 from inventio_auth.models import Account, Role
+from inventio_backend.settings import (SEED_TECHNICIAN1_EMAIL, SEED_TECHNICIAN1_PASSWORD,
+                                       SEED_TECHNICIAN2_EMAIL, SEED_TECHNICIAN2_PASSWORD,)
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        user = get_user_model()
+        if not Role.objects.filter(name=RoleEnum.TECHNICIAN.value).exists():
+            print(self.style.ERROR("Technician role not found.\n"
+                                   "Run 'python manage.py seedroles' first."))
+            return
 
-        if Account.objects.filter(role__name=RoleEnum.TECHNICIAN.value).exists():
-            raise CommandError("Technician already exists.")
-        try:
-            user.objects.create(
-                email=SEED_TECHNICIAN_EMAIL,
-                password=SEED_TECHNICIAN_PASSWORD,
-                name='System',
-                surname='Technician',
-                role=RoleEnum.TECHNICIAN,
-                is_staff=True
-            )
+        if Account.objects.filter(email=SEED_TECHNICIAN1_EMAIL).exists():
+            print(self.style.WARNING("Technician1 already exists."))
+        else:
+            try:
+                Account.objects.create(
+                    email=SEED_TECHNICIAN1_EMAIL,
+                    password=SEED_TECHNICIAN1_PASSWORD,
+                    name='Donald',
+                    surname='Tusk',
+                    role=RoleEnum.TECHNICIAN,
+                    is_staff=True
+                )
+                print(self.style.SUCCESS("Technician1 created successfully."))
+            except BaseException as e:
+                raise e
 
-            print("Technician created successfully.")
-        except Role.DoesNotExist:
-            raise CommandError("Technician role not found.\n"
-                               "Run 'python manage.py seedroles' first.")
+        if Account.objects.filter(email=SEED_TECHNICIAN2_EMAIL).exists():
+            print(self.style.WARNING("Technician2 already exists."))
+        else:
+            try:
+                Account.objects.create(
+                    email=SEED_TECHNICIAN2_EMAIL,
+                    password=SEED_TECHNICIAN2_PASSWORD,
+                    name='Jarosław',
+                    surname='Kaczyński',
+                    role=RoleEnum.TECHNICIAN,
+                    is_staff=True
+                )
+                print(self.style.SUCCESS("Technician2 created successfully."))
+            except BaseException as e:
+                raise e
