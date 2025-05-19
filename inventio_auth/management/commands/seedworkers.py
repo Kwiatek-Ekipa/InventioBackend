@@ -12,6 +12,7 @@ class Command(BaseCommand):
             print(self.style.ERROR("Worker role not found.\n"
                                    "Run 'python manage.py seedroles' first."))
             return
+
         if Account.objects.filter(email=SEED_WORKER1_EMAIL).exists():
             print(self.style.WARNING("Worker1 already exists."))
         else:
