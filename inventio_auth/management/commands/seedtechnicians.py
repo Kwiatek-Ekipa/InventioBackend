@@ -37,7 +37,6 @@ class Command(BaseCommand):
                 raise e
 
         if not options["production"]:
-            print(self.style.SUCCESS("INNER ARGUMENT WORKED!!!"))
             if Account.objects.filter(email=SEED_TECHNICIAN2_EMAIL).exists():
                 print(self.style.WARNING("Technician2 already exists."))
             else:

@@ -12,7 +12,6 @@ class Command(BaseCommand):
         call_command("seedroles")
 
         if options["production"]:
-            print(self.style.SUCCESS("OUTER ARGUMENT WORKED!!!"))
             call_command("seedtechnicians", "--production")
 
         else:
