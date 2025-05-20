@@ -7,6 +7,13 @@ from inventio_backend.settings import (SEED_TECHNICIAN1_EMAIL, SEED_TECHNICIAN1_
 
 
 class Command(BaseCommand):
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--production",
+            action="store_true"
+        )
+
+
     def handle(self, *args, **options):
         if not Role.objects.filter(name=RoleEnum.TECHNICIAN.value).exists():
             print(self.style.ERROR("Technician role not found.\n"
@@ -20,8 +27,8 @@ class Command(BaseCommand):
                 Account.objects.create(
                     email=SEED_TECHNICIAN1_EMAIL,
                     password=SEED_TECHNICIAN1_PASSWORD,
-                    name='Donald',
-                    surname='Tusk',
+                    name='Technician',
+                    surname='Important',
                     role=RoleEnum.TECHNICIAN,
                     is_staff=True
                 )
@@ -29,18 +36,20 @@ class Command(BaseCommand):
             except BaseException as e:
                 raise e
 
-        if Account.objects.filter(email=SEED_TECHNICIAN2_EMAIL).exists():
-            print(self.style.WARNING("Technician2 already exists."))
-        else:
-            try:
-                Account.objects.create(
-                    email=SEED_TECHNICIAN2_EMAIL,
-                    password=SEED_TECHNICIAN2_PASSWORD,
-                    name='Jarosław',
-                    surname='Kaczyński',
-                    role=RoleEnum.TECHNICIAN,
-                    is_staff=True
-                )
-                print(self.style.SUCCESS("Technician2 created successfully."))
-            except BaseException as e:
-                raise e
+        if not options["production"]:
+            print(self.style.SUCCESS("INNER ARGUMENT WORKED!!!"))
+            if Account.objects.filter(email=SEED_TECHNICIAN2_EMAIL).exists():
+                print(self.style.WARNING("Technician2 already exists."))
+            else:
+                try:
+                    Account.objects.create(
+                        email=SEED_TECHNICIAN2_EMAIL,
+                        password=SEED_TECHNICIAN2_PASSWORD,
+                        name='Jarosław',
+                        surname='Kaczyński',
+                        role=RoleEnum.TECHNICIAN,
+                        is_staff=True
+                    )
+                    print(self.style.SUCCESS("Technician2 created successfully."))
+                except BaseException as e:
+                    raise e
