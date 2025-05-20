@@ -9,7 +9,7 @@ from inventio_backend.settings import (SEED_TECHNICIAN1_EMAIL, SEED_TECHNICIAN1_
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
-            "--devel",
+            "--dev",
             action="store_true"
         )
 
@@ -36,7 +36,7 @@ class Command(BaseCommand):
             except BaseException as e:
                 raise e
 
-        if options["devel"]:
+        if options["dev"]:
             if Account.objects.filter(email=SEED_TECHNICIAN2_EMAIL).exists():
                 print(self.style.WARNING("Technician2 already exists."))
             else:
