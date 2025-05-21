@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
-from hardware.management.commands.seed_devices import Command as SeedDevicesCommand
-from hardware.management.commands.seed_categories import Command as SeedCategoriesCommand
-from hardware.management.commands.seed_brands import Command as SeedBrandsCommand
+from hardware.management.commands.seeddevices import Command as SeedDevicesCommand
+from hardware.management.commands.seedcategories import Command as SeedCategoriesCommand
+from hardware.management.commands.seedbrands import Command as SeedBrandsCommand
 
 class Command(BaseCommand):
 
