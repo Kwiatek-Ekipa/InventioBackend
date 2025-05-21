@@ -46,6 +46,10 @@ class Command(BaseCommand):
         five_years_ago = now.replace(year=now.year - 5)
 
         for device in devices:
+            if Stocktaking.objects.filter(device=device).exists():
+                self.stdout.write(self.style.WARNING(f"Stocktaking for device '{device.model}' already exists. Skipping..."))
+                continue
+
             random_release_date = make_aware(
                 five_years_ago + timedelta(
                     seconds=random.randint(0, int((now - five_years_ago).total_seconds()))
@@ -67,7 +71,3 @@ class Command(BaseCommand):
 
             Stocktaking.objects.create(**stocktaking_data)
             self.stdout.write(self.style.SUCCESS(f"Added stocktaking for device: {device.model}"))
-
-
-
-
