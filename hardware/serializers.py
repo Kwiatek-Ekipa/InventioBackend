@@ -21,6 +21,8 @@ class AddedBySerializer(serializers.ModelSerializer):
         fields = ["id", "email", "name", "surname"]
 
 class DeviceSerializer(serializers.ModelSerializer):
+    brand_id = serializers.UUIDField(write_only=True)
+    category_id = serializers.UUIDField(write_only=True)
     brand = BrandSerializer(read_only=True)
     category = HardwareCategorySerializer(read_only=True)
     added_by = AddedBySerializer(read_only=True)
