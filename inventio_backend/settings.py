@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-faw-8419y#*08%t-oen4t#=t2@y327h+u^9535mdt@b6&cdyim
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['inventio-backend.blueflower-c130f851.westeurope.azurecontainerapps.io']
 
 # Application definition
 
