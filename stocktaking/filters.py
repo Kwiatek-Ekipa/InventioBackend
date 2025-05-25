@@ -20,11 +20,11 @@ class StocktakingFilter(django_filters.FilterSet):
         lookup_expr='icontains'
     )
     released_for_name = django_filters.CharFilter(
-        field_name='user__name',
+        field_name='recipient__name',
         lookup_expr='icontains'
     )
     released_for_surname = django_filters.CharFilter(
-        field_name='user__surname',
+        field_name='recipient__surname',
         lookup_expr='icontains'
     )
     device_model = django_filters.CharFilter(

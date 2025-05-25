@@ -28,8 +28,8 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         'taken_back_by__name',
         'taken_back_by__surname',
         'device__model',
-        'user__name',
-        'user__surname'
+        'recipient__name',
+        'recipient__surname'
     ]
 
     queryset = Stocktaking.objects.all()
@@ -46,7 +46,7 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         obj = get_object_or_404(queryset, pk=self.kwargs["pk"])
         user = self.request.user
 
-        if user.role.name == RoleEnum.WORKER.value and obj.user_id != user.id:
+        if user.role.name == RoleEnum.WORKER.value and obj.recipient_id != user.id:
             raise PermissionDenied("You do not have permission to access this object.")
 
         self.check_object_permissions(self.request, obj)
@@ -73,7 +73,7 @@ class StocktakingViewSet(viewsets.ModelViewSet):
                         "Sort results by one of the following fields: "
                         "`release_date`, `return_date`, `released_by__name`,"
                         "`released_by__surname`, `taken_back_by__name`,"
-                        "`taken_back_by__surname`, `device__model`, `user__name`, `user__surname`."
+                        "`taken_back_by__surname`, `device__model`, `recipient__name`, `recipient__surname`."
                         "Prefix with `-` to sort descending (e.g., `-release_date`).`"
                 )
             ),
@@ -85,7 +85,7 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         queryset = self.filter_queryset(self.get_queryset())
 
         if user.role.name == RoleEnum.WORKER.value:
-            queryset = queryset.filter(user_id=user.id)
+            queryset = queryset.filter(recipient_id=user.id)
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)

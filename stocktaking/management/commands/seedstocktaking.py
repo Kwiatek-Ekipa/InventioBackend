@@ -59,7 +59,7 @@ class Command(BaseCommand):
             taken_back_by = random.choice(technicians) if returned else None
             stocktaking_data = {
                 "release_date": random_release_date,
-                "user": random.choice(workers),
+                "recipient": random.choice(workers),
                 "device": device,
                 "released_by": random.choice(technicians),
             }
