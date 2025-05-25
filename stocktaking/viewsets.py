@@ -26,8 +26,12 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         'released_by__name',
         'released_by__surname',
         'taken_back_by__name',
-        'taken_back_by__surname'
+        'taken_back_by__surname',
+        'device__model',
+        'user__name',
+        'user__surname'
     ]
+
     queryset = Stocktaking.objects.all()
 
     def get_permissions(self):
@@ -48,6 +52,17 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj)
         return obj
 
+    def partial_update(self, request, *args, **kwargs):
+        disallowed_fields = ['taken_back_by', 'return_date']
+        for field in disallowed_fields:
+            if field in request.data:
+                return Response(
+                    {"detail": f"Field '{field}' cannot be modified directly."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        return super().partial_update(request, *args, **kwargs)
+
     @extend_schema(
         parameters=[
             OpenApiParameter(
@@ -58,7 +73,7 @@ class StocktakingViewSet(viewsets.ModelViewSet):
                         "Sort results by one of the following fields: "
                         "`release_date`, `return_date`, `released_by__name`,"
                         "`released_by__surname`, `taken_back_by__name`,"
-                        "`taken_back_by__surname`."
+                        "`taken_back_by__surname`, `device__model`, `user__name`, `user__surname`."
                         "Prefix with `-` to sort descending (e.g., `-release_date`).`"
                 )
             ),
