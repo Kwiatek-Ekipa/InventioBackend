@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.generics import get_object_or_404
@@ -7,8 +7,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.utils.timezone import now
 from rest_framework.decorators import action
+from django_filters.rest_framework import DjangoFilterBackend
 
 from shared import IsTechnician, RoleEnum
+from stocktaking.filters import StocktakingFilter
 from stocktaking.models import Stocktaking
 from stocktaking.serializers import StocktakingSerializer
 
@@ -16,6 +18,16 @@ from stocktaking.serializers import StocktakingSerializer
 class StocktakingViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'patch','delete']
     serializer_class = StocktakingSerializer
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = StocktakingFilter
+    ordering_fields = [
+        'release_date',
+        'return_date',
+        'released_by__name',
+        'released_by__surname',
+        'taken_back_by__name',
+        'taken_back_by__surname'
+    ]
     queryset = Stocktaking.objects.all()
 
     def get_permissions(self):
@@ -36,9 +48,26 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj)
         return obj
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='ordering',
+                type=str,
+                location=OpenApiParameter.QUERY,
+                description=(
+                        "Sort results by one of the following fields: "
+                        "`release_date`, `return_date`, `released_by__name`,"
+                        "`released_by__surname`, `taken_back_by__name`,"
+                        "`taken_back_by__surname`."
+                        "Prefix with `-` to sort descending (e.g., `-release_date`).`"
+                )
+            ),
+        ]
+    )
+
     def list(self, request, *args, **kwargs):
         user = self.request.user
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
 
         if user.role.name == RoleEnum.WORKER.value:
             queryset = queryset.filter(user_id=user.id)
