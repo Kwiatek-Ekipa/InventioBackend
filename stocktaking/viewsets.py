@@ -4,6 +4,9 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.generics import get_object_or_404
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
+from rest_framework import status
+from django.utils.timezone import now
+from rest_framework.decorators import action
 
 from shared import IsTechnician, RoleEnum
 from stocktaking.models import Stocktaking
@@ -16,7 +19,7 @@ class StocktakingViewSet(viewsets.ModelViewSet):
     queryset = Stocktaking.objects.all()
 
     def get_permissions(self):
-        if self.action in ['create', 'partial_update', 'destroy']:
+        if self.action in ['create', 'partial_update', 'destroy', 'take_back_device']:
             permission_classes = [IsTechnician]
         else:
             permission_classes = [IsAuthenticated]
@@ -44,3 +47,19 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+    @action(detail=True, methods=['patch'], url_path='takeBack')
+    def take_back_device(self, request, pk=None):
+        stocktaking = self.get_object()
+
+        if stocktaking.return_date is not None or stocktaking.taken_back_by is not None:
+            return Response(
+                {"detail": "This device has already been returned!"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        stocktaking.return_date = request.data.get('return_date', now())
+        stocktaking.taken_back_by = request.user
+        stocktaking.save()
+
+        serializer = self.get_serializer(stocktaking)
+        return Response(serializer.data)
