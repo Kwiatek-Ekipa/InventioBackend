@@ -12,12 +12,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from shared import IsTechnician, RoleEnum
 from stocktaking.filters import StocktakingFilter
 from stocktaking.models import Stocktaking
-from stocktaking.serializers import StocktakingSerializer, TakeBackStocktakingSerializer
+from stocktaking.serializers import StocktakingSerializer, TakeBackStocktakingSerializer, DetailedStocktakingSerializer
 
 
 class StocktakingViewSet(viewsets.ModelViewSet):
-    http_method_names = ['get', 'post', 'patch','delete']
-    serializer_class = StocktakingSerializer
+    http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = StocktakingFilter
     ordering_fields = [
@@ -33,6 +32,12 @@ class StocktakingViewSet(viewsets.ModelViewSet):
     ]
 
     queryset = Stocktaking.objects.all()
+
+    def get_serializer_class(self):
+        if self.action in ['retrieve']:
+            return DetailedStocktakingSerializer
+        else:
+            return StocktakingSerializer
 
     def get_permissions(self):
         if self.action in ['create', 'partial_update', 'destroy', 'take_back_device']:
@@ -52,16 +57,16 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj)
         return obj
 
-    def partial_update(self, request, *args, **kwargs):
-        disallowed_fields = ['taken_back_by', 'return_date']
-        for field in disallowed_fields:
-            if field in request.data:
-                return Response(
-                    {"detail": f"Field '{field}' cannot be modified directly."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
-        return super().partial_update(request, *args, **kwargs)
+    # def partial_update(self, request, *args, **kwargs):
+    #     disallowed_fields = ['taken_back_by', 'return_date']
+    #     for field in disallowed_fields:
+    #         if field in request.data:
+    #             return Response(
+    #                 {"detail": f"Field '{field}' cannot be modified directly."},
+    #                 status=status.HTTP_400_BAD_REQUEST
+    #             )
+    #
+    #     return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
         parameters=[

@@ -15,7 +15,7 @@ class BrandSerializer(serializers.ModelSerializer):
         model = Brand
         fields = "__all__"
 
-class AddedBySerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ["id", "email", "name", "surname"]
@@ -25,7 +25,7 @@ class DeviceSerializer(serializers.ModelSerializer):
     category_id = serializers.UUIDField(write_only=True)
     brand = BrandSerializer(read_only=True)
     category = HardwareCategorySerializer(read_only=True)
-    added_by = AddedBySerializer(read_only=True)
+    added_by = UserSerializer(read_only=True)
 
     class Meta:
         model = Device
