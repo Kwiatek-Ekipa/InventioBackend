@@ -32,7 +32,16 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         'recipient__surname'
     ]
 
-    queryset = Stocktaking.objects.all()
+    def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Stocktaking.objects.none()
+
+        user = self.request.user
+
+        if user.role.name == RoleEnum.WORKER.value:
+            return Stocktaking.objects.filter(recipient_id=user.id)
+
+        return Stocktaking.objects.all()
 
     def get_serializer_class(self):
         if self.action in ['retrieve']:
@@ -85,16 +94,8 @@ class StocktakingViewSet(viewsets.ModelViewSet):
             ),
         ]
     )
-
     def list(self, request, *args, **kwargs):
-        user = self.request.user
-        queryset = self.filter_queryset(self.get_queryset())
-
-        if user.role.name == RoleEnum.WORKER.value:
-            queryset = queryset.filter(recipient_id=user.id)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        return super().list(request, *args, **kwargs)
 
 
 
