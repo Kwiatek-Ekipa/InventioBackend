@@ -12,7 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from shared import IsTechnician, RoleEnum
 from stocktaking.filters import StocktakingFilter
 from stocktaking.models import Stocktaking
-from stocktaking.serializers import StocktakingSerializer
+from stocktaking.serializers import StocktakingSerializer, TakeBackStocktakingSerializer
 
 
 class StocktakingViewSet(viewsets.ModelViewSet):
@@ -91,7 +91,11 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-    @action(detail=True, methods=['patch'], url_path='takeBack')
+
+    @extend_schema(
+        request=TakeBackStocktakingSerializer,
+    )
+    @action(detail=True, methods=['patch'], url_path='take-back')
     def take_back_device(self, request, pk=None):
         stocktaking = self.get_object()
 

@@ -8,3 +8,7 @@ class StocktakingSerializer(serializers.ModelSerializer):
         model = Stocktaking
         fields = "__all__"
 
+class TakeBackStocktakingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stocktaking
+        fields = ['id']
