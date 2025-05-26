@@ -17,7 +17,6 @@ from stocktaking.serializers import StocktakingSerializer, TakeBackStocktakingSe
 
 class StocktakingViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'patch','delete']
-    serializer_class = StocktakingSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = StocktakingFilter
     ordering_fields = [
