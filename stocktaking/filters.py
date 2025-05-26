@@ -36,6 +36,13 @@ class StocktakingFilter(django_filters.FilterSet):
         lookup_expr='icontains'
     )
 
+    is_returned = django_filters.BooleanFilter(method='filter_missing_return_info')
+
+    def filter_missing_return_info(self, queryset, name, value):
+        if type(value) == bool:
+            return queryset.filter(taken_back_by__isnull= not value, return_date__isnull= not value)
+        return queryset
+
 
     class Meta:
         model = Stocktaking
