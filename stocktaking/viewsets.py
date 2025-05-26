@@ -16,7 +16,8 @@ from stocktaking.serializers import StocktakingSerializer, TakeBackStocktakingSe
 
 
 class StocktakingViewSet(viewsets.ModelViewSet):
-    http_method_names = ['get', 'post', 'delete']
+    http_method_names = ['get', 'post', 'patch','delete']
+    serializer_class = StocktakingSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = StocktakingFilter
     ordering_fields = [
@@ -57,16 +58,16 @@ class StocktakingViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj)
         return obj
 
-    # def partial_update(self, request, *args, **kwargs):
-    #     disallowed_fields = ['taken_back_by', 'return_date']
-    #     for field in disallowed_fields:
-    #         if field in request.data:
-    #             return Response(
-    #                 {"detail": f"Field '{field}' cannot be modified directly."},
-    #                 status=status.HTTP_400_BAD_REQUEST
-    #             )
-    #
-    #     return super().partial_update(request, *args, **kwargs)
+    def partial_update(self, request, *args, **kwargs):
+        disallowed_fields = ['taken_back_by', 'return_date']
+        for field in disallowed_fields:
+            if field in request.data:
+                return Response(
+                    {"detail": f"Field '{field}' cannot be modified directly."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
         parameters=[
@@ -98,6 +99,7 @@ class StocktakingViewSet(viewsets.ModelViewSet):
 
 
     @extend_schema(
+        parameters=[],
         request=TakeBackStocktakingSerializer,
     )
     @action(detail=True, methods=['patch'], url_path='take-back')
