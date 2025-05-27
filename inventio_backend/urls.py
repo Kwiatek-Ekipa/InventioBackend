@@ -22,6 +22,7 @@ urlpatterns = [
     path('api/', include([
         path('', include('inventio_auth.urls', namespace='inventio_auth')),
         path('', include('hardware.urls', namespace='hardware')),
+        path('', include('stocktaking.urls', namespace='stocktaking')),
     ])),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
