@@ -43,9 +43,7 @@ jobs:
       - name: Azure login
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy to Azure Container Apps
         run: az containerapp update --name ${{ env.RESOURCE_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --image ${{ env.IMAGE_NAME }}:latest
