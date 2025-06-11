@@ -10,5 +10,5 @@ ADD . /app
 WORKDIR /app
 RUN uv sync --locked
 
-ENTRYPOINT ["./entrypoint.sh"] 
+RUN chmod +x ./entrypoint.sh
 CMD ["uv", "run", "gunicorn", "--bind", "0.0.0.0:8000", "inventio_backend.wsgi:application"]
