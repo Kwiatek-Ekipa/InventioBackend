@@ -54,3 +54,5 @@ jobs:
           registryPassword: ${{ secrets.DOCKERHUB_TOKEN }}
           containerAppName: inventiobackend
           resourceGroup: Inventio
+      - name: Wyświetl logi z Azure Container App
+        run: az containerapp logs tail --name ${{ env.RESOURCE_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --follow --output table
