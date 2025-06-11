@@ -54,5 +54,10 @@ jobs:
           registryPassword: ${{ secrets.DOCKERHUB_TOKEN }}
           containerAppName: inventiobackend
           resourceGroup: Inventio
+          targetPort: 8000
+
+      - name: Wait for replicas
+        run: sleep 10
+
       - name: Show logs from Azure Container App
         run: az containerapp logs show --name ${{ env.RESOURCE_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --follow --output table
