@@ -55,19 +55,4 @@ jobs:
           containerAppName: ${{ env.RESOURCE_NAME }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           targetPort: 8000
-          environmentVariables: |
-            DB_NAME=InventioDB
-            DB_USER=${{ secrets.DB_USER }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            DB_HOST=${{ secrets.DB_HOST }}
-            DB_PORT=${{ secrets.DB_PORT }}
-            ACCESS_TOKEN_LIFETIME_MINUTES=60
-            REFRESH_TOKEN_LIFETIME_DAYS=7
-            SEED_TECHNICIAN1_EMAIL=${{ secrets.SEED_TECHNICIAN1_EMAIL }}
-            SEED_TECHNICIAN1_PASSWORD=${{ secrets.SEED_TECHNICIAN1_PASSWORD }}
-            SEED_TECHNICIAN2_EMAIL=${{ secrets.SEED_TECHNICIAN2_EMAIL }}
-            SEED_TECHNICIAN2_PASSWORD=${{ secrets.SEED_TECHNICIAN2_PASSWORD }}
-            SEED_WORKER1_EMAIL=${{ secrets.SEED_WORKER1_EMAIL }}
-            SEED_WORKER1_PASSWORD=${{ secrets.SEED_WORKER1_PASSWORD }}
-            SEED_WORKER2_EMAIL=${{ secrets.SEED_WORKER2_EMAIL }}
-            SEED_WORKER2_PASSWORD=${{ secrets.SEED_WORKER2_PASSWORD }}
+          containerAppEnvironment: managedEnvironment-Inventio-a603
