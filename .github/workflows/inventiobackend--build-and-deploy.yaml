@@ -52,10 +52,10 @@ jobs:
           registryUrl: docker.io
           registryUsername: ${{ secrets.DOCKERHUB_USERNAME }}
           registryPassword: ${{ secrets.DOCKERHUB_TOKEN }}
-          containerAppName: inventiobackend
-          resourceGroup: Inventio
+          containerAppName: ${{ env.RESOURCE_NAME }}
+          resourceGroup: ${{ env.RESOURCE_GROUP }}
           targetPort: 8000
-          environmentVariables: |
+          containerAppEnvironment: |
             DB_NAME=${{ secrets.DB_NAME }}
             DB_USER=${{ secrets.DB_USER }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
