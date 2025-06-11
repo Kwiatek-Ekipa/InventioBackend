@@ -10,7 +10,6 @@ WORKDIR /app
 
 RUN uv sync --locked
 
-
 RUN echo "Applying database migrations..."
 RUN uv run manage.py migrate
 
