@@ -10,10 +10,7 @@ WORKDIR /app
 
 RUN uv sync --locked
 
-RUN echo "Applying database migrations..."
-RUN uv run manage.py migrate
-
-RUN echo "Seeding database..."
-RUN uv run manage.py seedapp
+RUN chmod +x entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
 
 CMD ["uv", "run", "gunicorn", "--bind", "0.0.0.0:8000", "inventio_backend.wsgi:application"]

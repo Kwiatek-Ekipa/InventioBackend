@@ -10,9 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from datetime import timedelta
-from email.policy import default
 from pathlib import Path
-from decouple import config, UndefinedValueError
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,24 +85,17 @@ WSGI_APPLICATION = 'inventio_backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-try:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            "NAME": config("DB_NAME"),
-            "USER": config("DB_USER"),
-            "PASSWORD": config("DB_PASSWORD"),
-            "HOST": config("DB_HOST"),
-            "PORT": config("DB_PORT"),
-        }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
     }
-except UndefinedValueError:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'temp_db.sqlite3',  # Tymczasowa baza dla builda
-        }
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -164,8 +156,9 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=config('ACCESS_TOKEN_LIFETIME_MINUTES', default=0, cast=int)),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=config('REFRESH_TOKEN_LIFETIME_DAYS', default=0, cast=int)),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=config('ACCESS_TOKEN_LIFETIME_MINUTES', cast=int)),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=config('REFRESH_TOKEN_LIFETIME_DAYS', cast=int)),
+
 }
 
 SPECTACULAR_SETTINGS = {
@@ -195,11 +188,11 @@ SPECTACULAR_SETTINGS = {
 
 AUTH_USER_MODEL = 'inventio_auth.Account'
 
-SEED_TECHNICIAN1_EMAIL = config("SEED_TECHNICIAN1_EMAIL", default="")
-SEED_TECHNICIAN1_PASSWORD = config("SEED_TECHNICIAN1_PASSWORD", default="")
-SEED_TECHNICIAN2_EMAIL = config("SEED_TECHNICIAN2_EMAIL", default="")
-SEED_TECHNICIAN2_PASSWORD = config("SEED_TECHNICIAN2_PASSWORD", default="")
-SEED_WORKER1_EMAIL = config("SEED_WORKER1_EMAIL", default="")
-SEED_WORKER1_PASSWORD = config("SEED_WORKER1_PASSWORD", default="")
-SEED_WORKER2_EMAIL = config("SEED_WORKER2_EMAIL", default="")
-SEED_WORKER2_PASSWORD = config("SEED_WORKER2_PASSWORD", default="")
+SEED_TECHNICIAN1_EMAIL = config("SEED_TECHNICIAN1_EMAIL")
+SEED_TECHNICIAN1_PASSWORD = config("SEED_TECHNICIAN1_PASSWORD")
+SEED_TECHNICIAN2_EMAIL = config("SEED_TECHNICIAN2_EMAIL")
+SEED_TECHNICIAN2_PASSWORD = config("SEED_TECHNICIAN2_PASSWORD")
+SEED_WORKER1_EMAIL = config("SEED_WORKER1_EMAIL")
+SEED_WORKER1_PASSWORD = config("SEED_WORKER1_PASSWORD")
+SEED_WORKER2_EMAIL = config("SEED_WORKER2_EMAIL")
+SEED_WORKER2_PASSWORD = config("SEED_WORKER2_PASSWORD")
