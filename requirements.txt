@@ -12,3 +12,4 @@ psycopg==3.2.9
 psycopg-binary==3.2.9
 python-decouple==3.8
 tzdata==2025.2
+gunicorn==21.2.0
