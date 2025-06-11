@@ -55,6 +55,3 @@ jobs:
           containerAppName: inventiobackend
           resourceGroup: Inventio
           targetPort: 8000
-
-      - name: Show logs from Azure Container App
-        run: az containerapp logs show --name ${{ env.RESOURCE_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --follow --output table
