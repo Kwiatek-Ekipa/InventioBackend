@@ -13,13 +13,7 @@ from shared.permissions import IsTechnician
 from .serializers import UserRegisterSerializer, UserInfoSerializer, CreateTechnicianSerializer
 from .models import Account
 
-
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def hello_world(request: Request):
-    return (Response("Hello, World!", status=status.HTTP_200_OK)
-
-@extend_schema(auth=[], request=UserRegisterSerializer, responses={201: UserRegisterSerializer}, ))
+@extend_schema(auth=[], request=UserRegisterSerializer, responses={201: UserRegisterSerializer})
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request: Request):

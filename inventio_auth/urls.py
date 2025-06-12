@@ -13,7 +13,6 @@ router.register('roles', viewsets.RoleViewSet, basename='roles')
 router.register('accounts', viewsets.AccountViewSet, basename='accounts')
 
 urlpatterns = [
-    path('hello-world/', views.hello_world, name='hello_world'),
     path('auth/', include([
         path('register/', views.register_user, name='register'),
         path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

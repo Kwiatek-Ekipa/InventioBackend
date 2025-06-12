@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-faw-8419y#*08%t-oen4t#=t2@y327h+u^9535mdt@b6&cdyim
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
     "inventiobackend.blueflower-c130f851.westeurope.azurecontainerapps.io"
 ]
 
