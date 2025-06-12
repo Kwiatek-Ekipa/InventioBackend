@@ -48,7 +48,6 @@ jobs:
       - name: Deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v2
         with:
-          appSourcePath: ${{ github.workspace }}
           imageToDeploy: docker.io/${{ env.IMAGE_NAME }}:latest
           registryUrl: docker.io
           registryUsername: ${{ secrets.DOCKERHUB_USERNAME }}
