@@ -23,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-faw-8419y#*08%t-oen4t#=t2@y327h+u^9535mdt@b6&cdyim'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
+    "127.0.0.1",
     "inventiobackend.blueflower-c130f851.westeurope.azurecontainerapps.io"
 ]
 
