@@ -55,6 +55,3 @@ jobs:
           containerAppName: ${{ env.RESOURCE_NAME }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           targetPort: 8000
-
-      - name: Restart Azure Container App
-        run: az containerapp revision restart --name ${{ env.RESOURCE_NAME }} --resource-group ${{ env.RESOURCE_GROUP }}
