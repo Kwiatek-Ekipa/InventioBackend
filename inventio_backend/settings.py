@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-import os
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
@@ -90,11 +89,11 @@ WSGI_APPLICATION = 'inventio_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "HOST": os.environ.get("DB_HOST"),
-        "PORT": os.environ.get("DB_PORT"),
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
     }
 }
 
@@ -157,8 +156,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.environ.get('ACCESS_TOKEN_LIFETIME_MINUTES'))),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.environ.get('REFRESH_TOKEN_LIFETIME_DAYS'))),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=config('ACCESS_TOKEN_LIFETIME_MINUTES', cast=int)),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=config('REFRESH_TOKEN_LIFETIME_DAYS', cast=int)),
 
 }
 
@@ -189,11 +188,11 @@ SPECTACULAR_SETTINGS = {
 
 AUTH_USER_MODEL = 'inventio_auth.Account'
 
-SEED_TECHNICIAN1_EMAIL = os.environ.get("SEED_TECHNICIAN1_EMAIL")
-SEED_TECHNICIAN1_PASSWORD = os.environ.get("SEED_TECHNICIAN1_PASSWORD")
-SEED_TECHNICIAN2_EMAIL = os.environ.get("SEED_TECHNICIAN2_EMAIL")
-SEED_TECHNICIAN2_PASSWORD = os.environ.get("SEED_TECHNICIAN2_PASSWORD")
-SEED_WORKER1_EMAIL = os.environ.get("SEED_WORKER1_EMAIL")
-SEED_WORKER1_PASSWORD = os.environ.get("SEED_WORKER1_PASSWORD")
-SEED_WORKER2_EMAIL = os.environ.get("SEED_WORKER2_EMAIL")
-SEED_WORKER2_PASSWORD = os.environ.get("SEED_WORKER2_PASSWORD")
+SEED_TECHNICIAN1_EMAIL = config("SEED_TECHNICIAN1_EMAIL")
+SEED_TECHNICIAN1_PASSWORD = config("SEED_TECHNICIAN1_PASSWORD")
+SEED_TECHNICIAN2_EMAIL = config("SEED_TECHNICIAN2_EMAIL")
+SEED_TECHNICIAN2_PASSWORD = config("SEED_TECHNICIAN2_PASSWORD")
+SEED_WORKER1_EMAIL = config("SEED_WORKER1_EMAIL")
+SEED_WORKER1_PASSWORD = config("SEED_WORKER1_PASSWORD")
+SEED_WORKER2_EMAIL = config("SEED_WORKER2_EMAIL")
+SEED_WORKER2_PASSWORD = config("SEED_WORKER2_PASSWORD")

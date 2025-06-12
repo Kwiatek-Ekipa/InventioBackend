@@ -55,4 +55,3 @@ jobs:
           containerAppName: ${{ env.RESOURCE_NAME }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           targetPort: 8000
-          containerAppEnvironment: managedEnvironment-Inventio-a603
