@@ -14,6 +14,11 @@ from .serializers import UserRegisterSerializer, UserInfoSerializer, CreateTechn
 from .models import Account
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def hello_world(request: Request):
+    return Response("Hello, World!", status=status.HTTP_200_OK)
+
 @extend_schema(auth=[], request=UserRegisterSerializer, responses={201: UserRegisterSerializer}, )
 @api_view(['POST'])
 @permission_classes([AllowAny])
