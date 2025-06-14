@@ -1,13 +1,16 @@
 from django.core.management import BaseCommand
-
+from decouple import config
 from inventio_auth.models import Account, Role
-from inventio_backend.settings import (SEED_WORKER1_EMAIL, SEED_WORKER1_PASSWORD,
-                                       SEED_WORKER2_EMAIL, SEED_WORKER2_PASSWORD)
 from shared import RoleEnum
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        SEED_WORKER1_EMAIL = config("SEED_WORKER1_EMAIL")
+        SEED_WORKER1_PASSWORD = config("SEED_WORKER1_PASSWORD")
+        SEED_WORKER2_EMAIL = config("SEED_WORKER2_EMAIL")
+        SEED_WORKER2_PASSWORD = config("SEED_WORKER2_PASSWORD")
+
         if not Role.objects.filter(name=RoleEnum.WORKER.value).exists():
             print(self.style.ERROR("Worker role not found.\n"
                                    "Run 'python manage.py seedroles' first."))
