@@ -18,12 +18,19 @@ Including another URLconf
 from django.urls import path, include
 from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 
+from inventio_backend import settings
+
 urlpatterns = [
     path('api/', include([
         path('', include('inventio_auth.urls', namespace='inventio_auth')),
         path('', include('hardware.urls', namespace='hardware')),
-        path('', include('stocktaking.urls', namespace='stocktaking')),
     ])),
-    path('schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]
+
+if settings.DEBUG:
+    swagger_urlpatterns = [
+        path('schema/', SpectacularAPIView.as_view(), name='schema'),
+        path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    ]
+
+    urlpatterns += swagger_urlpatterns

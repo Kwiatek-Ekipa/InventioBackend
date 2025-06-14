@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from datetime import timedelta
+from email.policy import default
 from pathlib import Path
 from decouple import config
 
@@ -20,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-faw-8419y#*08%t-oen4t#=t2@y327h+u^9535mdt@b6&cdyim'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", cast=bool, default=False)
 
 ALLOWED_HOSTS = []
 
@@ -188,9 +189,3 @@ AUTH_USER_MODEL = 'inventio_auth.Account'
 
 SEED_TECHNICIAN1_EMAIL = config("SEED_TECHNICIAN1_EMAIL")
 SEED_TECHNICIAN1_PASSWORD = config("SEED_TECHNICIAN1_PASSWORD")
-SEED_TECHNICIAN2_EMAIL = config("SEED_TECHNICIAN2_EMAIL")
-SEED_TECHNICIAN2_PASSWORD = config("SEED_TECHNICIAN2_PASSWORD")
-SEED_WORKER1_EMAIL = config("SEED_WORKER1_EMAIL")
-SEED_WORKER1_PASSWORD = config("SEED_WORKER1_PASSWORD")
-SEED_WORKER2_EMAIL = config("SEED_WORKER2_EMAIL")
-SEED_WORKER2_PASSWORD = config("SEED_WORKER2_PASSWORD")

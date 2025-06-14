@@ -1,9 +1,8 @@
 from django.core.management import BaseCommand
-
+from decouple import config
 from shared.enums import RoleEnum
 from inventio_auth.models import Account, Role
-from inventio_backend.settings import (SEED_TECHNICIAN1_EMAIL, SEED_TECHNICIAN1_PASSWORD,
-                                       SEED_TECHNICIAN2_EMAIL, SEED_TECHNICIAN2_PASSWORD,)
+from inventio_backend.settings import (SEED_TECHNICIAN1_EMAIL, SEED_TECHNICIAN1_PASSWORD)
 
 
 class Command(BaseCommand):
@@ -37,6 +36,9 @@ class Command(BaseCommand):
                 raise e
 
         if options["dev"]:
+            SEED_TECHNICIAN2_EMAIL = config("SEED_TECHNICIAN2_EMAIL")
+            SEED_TECHNICIAN2_PASSWORD = config("SEED_TECHNICIAN2_PASSWORD")
+
             if Account.objects.filter(email=SEED_TECHNICIAN2_EMAIL).exists():
                 print(self.style.WARNING("Technician2 already exists."))
             else:
