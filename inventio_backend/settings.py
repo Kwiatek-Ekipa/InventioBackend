@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config("DEBUG", cast=bool, default=False)
 
 ALLOWED_HOSTS = [
-    "inventiobackend.blueflower-c130f851.westeurope.azurecontainerapps.io"
+    "https://inventiobackend.internal.yellowmoss-4ac0611b.polandcentral.azurecontainerapps.io"
 ]
 
 # Application definition
